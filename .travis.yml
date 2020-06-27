@@ -1,0 +1,10 @@
+language: php
+php:
+    - '7.4'
+    - 'nightly'
+
+install:
+    - composer install
+
+script:
+    - composer run tests

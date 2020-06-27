@@ -1,0 +1,43 @@
+{
+  "name": "thiagocordeiro/serializer",
+  "description": "PHP tiny container for serverless like projects",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Thiago Cordeiro",
+      "email": "thiagoguetten@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.4",
+    "ext-json": "*",
+    "psr/container": "^1.0"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12.29",
+    "phpstan/phpstan-phpunit": "^0.12.11",
+    "phpunit/phpunit": "^9.2",
+    "slevomat/coding-standard": "^6.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "TinyContainer\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "TinyContainer\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test:cs": "vendor/bin/phpcs --standard=phpcs.xml --colors -ps",
+    "test:stan": "php -d memory_limit=-1 vendor/bin/phpstan analyse src tests --level=max --ansi",
+    "test:unit": "vendor/bin/phpunit --color=always --testdox",
+    "tests": [
+      "@test:cs",
+      "@test:stan",
+      "@test:unit"
+    ]
+  }
+}
