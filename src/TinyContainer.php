@@ -11,7 +11,7 @@ use Throwable;
 class TinyContainer implements ContainerInterface
 {
     /** @var Closure[] */
-    private array $services = [];
+    private array $services;
 
     /**
      * @param Closure[] $services
