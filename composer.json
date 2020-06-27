@@ -1,5 +1,5 @@
 {
-  "name": "thiagocordeiro/serializer",
+  "name": "thiagocordeiro/tiny-container",
   "description": "PHP tiny container for serverless like projects",
   "type": "library",
   "license": "MIT",
