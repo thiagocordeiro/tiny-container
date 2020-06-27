@@ -1,7 +1,7 @@
 # Tiny Container
 
-Tiny container is a `psr/container` implementation which allows registering and services and creating services only when needed, there is no fancy or complex features, for this I would recommend using [https://php-di.org/](https://php-di.org/).
-The reason is to have container capabilities under interface for very tiny projects, where you don't even need a framework.
+Tiny container is a `psr/container` implementation which allows registering services to be instantiated only when needed, there is no fancy or complex features, for this I would recommend using [https://php-di.org/](https://php-di.org/).
+The goal is to have container capabilities under psr interface for very tiny projects, when we don't even need a framework.
 
 ## Installing
 ```bash
