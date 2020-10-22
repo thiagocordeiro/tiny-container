@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace TinyContainer;
 
 use Closure;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
+/**
+ * @template T of object
+ */
 class TinyContainer implements ContainerInterface
 {
     /** @var Closure[] */
@@ -22,7 +27,12 @@ class TinyContainer implements ContainerInterface
     }
 
     /**
-     * @inheritDoc
+     * @param class-string<T> $id
+     * @return T
+     *
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     *
      */
     public function get($id)
     {
@@ -43,6 +53,8 @@ class TinyContainer implements ContainerInterface
 
     /**
      * @inheritDoc
+     * @param class-string<T> $id
+     * @return bool
      */
     public function has($id)
     {
