@@ -10,9 +10,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 
-/**
- * @template T of object
- */
 class TinyContainer implements ContainerInterface
 {
     /** @var Closure[] */
@@ -27,12 +24,12 @@ class TinyContainer implements ContainerInterface
     }
 
     /**
+     * @template T of object
      * @param class-string<T> $id
      * @return T
      *
      * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
-     *
      */
     public function get($id)
     {
@@ -53,6 +50,7 @@ class TinyContainer implements ContainerInterface
 
     /**
      * @inheritDoc
+     * @template T of object
      * @param class-string<T> $id
      * @return bool
      */
