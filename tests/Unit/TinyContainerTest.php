@@ -21,15 +21,16 @@ class TinyContainerTest extends TestCase
     protected function setUp(): void
     {
         $this->container = new TinyContainer([
-            MyService::class => fn(ContainerInterface $container) => new MyService(
+            MyService::class => fn (ContainerInterface $container) => new MyService(
                 new DateTimeImmutable('2020-01-01 15:15:15')
             ),
-            AnotherService::class => fn(ContainerInterface $container) => new AnotherService(
+            AnotherService::class => fn (ContainerInterface $container) => new AnotherService(
                 $container->get(MyService::class)
             ),
             'failing.service' => function (ContainerInterface $container): void {
                 throw new Exception('something went wrong');
             },
+            'non-callable.service' => new MyService(new DateTimeImmutable('2020-01-01 15:15:15')),
         ]);
     }
 
@@ -42,11 +43,20 @@ class TinyContainerTest extends TestCase
         $this->container->get($id);
     }
 
-    public function testWhenServiceFailsToCreateThenThrowContainerException(): void
+    public function testWhenServiceIsNotCallableThenThrowContainerException(): void
+    {
+        $id = 'non-callable.service';
+
+        $this->expectException(ContainerException::class);
+
+        $this->container->get($id);
+    }
+
+    public function testWhenServiceFailsToCreateThenThrowException(): void
     {
         $id = 'failing.service';
 
-        $this->expectException(ContainerException::class);
+        $this->expectExceptionObject(new Exception('something went wrong'));
 
         $this->container->get($id);
     }

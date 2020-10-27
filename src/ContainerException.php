@@ -6,12 +6,11 @@ namespace TinyContainer;
 
 use Exception;
 use Psr\Container\ContainerExceptionInterface;
-use Throwable;
 
 class ContainerException extends Exception implements ContainerExceptionInterface
 {
-    public function __construct(string $id, Throwable $previous)
+    public function __construct(string $id)
     {
-        parent::__construct(sprintf('Unable to retrieve service %s from container', $id), 0, $previous);
+        parent::__construct(sprintf('Unable to retrieve service %s from container', $id), 0);
     }
 }
