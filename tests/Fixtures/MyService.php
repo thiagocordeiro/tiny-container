@@ -19,4 +19,9 @@ class MyService
     {
         return $this->dateTime;
     }
+
+    public function replaceDateTime(DateTimeImmutable $value): void
+    {
+        $this->dateTime = $value;
+    }
 }

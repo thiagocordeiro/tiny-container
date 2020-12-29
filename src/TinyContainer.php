@@ -6,10 +6,16 @@ namespace TinyContainer;
 
 use Psr\Container\ContainerInterface;
 
+/**
+ * @template T of object
+ */
 class TinyContainer implements ContainerInterface
 {
     /** @var mixed[] */
     private array $services;
+
+    /** @var array<string, T|object> */
+    private array $instances;
 
     /**
      * @param mixed[] $services
@@ -21,11 +27,24 @@ class TinyContainer implements ContainerInterface
 
     /**
      * @inheritDoc
-     * @template T of object
-     * @param class-string<T> $id
-     * @return T
+     * @param class-string<T>|string $id
+     * @return T|object
      */
     public function get($id)
+    {
+        $this->instances[$id] ??= $this->create($id);
+
+        return $this->instances[$id];
+    }
+
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     * @param class-string<T>|string $id
+     * @return T|object
+     * @throws NotFoundException
+     * @throws ContainerException
+     */
+    public function create(string $id)
     {
         $fn = $this->services[$id] ?? null;
 
@@ -42,8 +61,7 @@ class TinyContainer implements ContainerInterface
 
     /**
      * @inheritDoc
-     * @template T of object
-     * @param class-string<T> $id
+     * @param class-string<T>|string $id
      * @return bool
      */
     public function has($id)

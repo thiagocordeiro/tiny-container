@@ -16,6 +16,7 @@ use TinyContainer\TinyContainer;
 
 class TinyContainerTest extends TestCase
 {
+    /** @var TinyContainer<object> */
     private TinyContainer $container;
 
     protected function setUp(): void
@@ -68,5 +69,34 @@ class TinyContainerTest extends TestCase
         $service = $this->container->get($id);
 
         $this->assertEquals(new AnotherService(new MyService(new DateTimeImmutable('2020-01-01 15:15:15'))), $service);
+    }
+
+    public function testWhenServiceIsGotOnceThenCacheItsInstance(): void
+    {
+        $id = MyService::class;
+        $service = $this->container->get($id);
+        assert($service instanceof MyService);
+        $service->replaceDateTime(new DateTimeImmutable('1997-12-12 19:19:19'));
+
+        $cached = $this->container->get($id);
+        assert($cached instanceof MyService);
+
+        $this->assertEquals('1997-12-12 19:19:19', $cached->getDateTime()->format('Y-m-d H:i:s'));
+    }
+
+    public function testWhenServiceIsCreatedThenReturnNewInstanceWithoutChangingCachedInstance(): void
+    {
+        $id = MyService::class;
+        $service = $this->container->get($id);
+        assert($service instanceof MyService);
+        $service->replaceDateTime(new DateTimeImmutable('1997-12-12 19:19:19'));
+
+        $created = $this->container->create($id);
+        assert($created instanceof MyService);
+        $cached = $this->container->get($id);
+        assert($cached instanceof MyService);
+
+        $this->assertEquals('2020-01-01 15:15:15', $created->getDateTime()->format('Y-m-d H:i:s'));
+        $this->assertEquals('1997-12-12 19:19:19', $cached->getDateTime()->format('Y-m-d H:i:s'));
     }
 }
