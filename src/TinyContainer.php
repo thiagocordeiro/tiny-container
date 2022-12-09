@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace TinyContainer;
 
 use Psr\Container\ContainerInterface;
+use ReflectionClass;
+use ReflectionParameter;
 
 /**
  * @template T of object
@@ -67,5 +69,20 @@ class TinyContainer implements ContainerInterface
     public function has($id)
     {
         return isset($this->services[$id]);
+    }
+
+    public static function resolve(string $class)
+    {
+        return function (ContainerInterface $container) use ($class): object {
+            $reflection = new ReflectionClass($class);
+            $constructor = $reflection->getConstructor();
+
+            $params = array_map(
+                fn(ReflectionParameter $parameter) => $container->get($parameter->getType()->getName()),
+                $constructor->getParameters()
+            );
+
+            return new $class(...$params);
+        };
     }
 }

@@ -13,6 +13,7 @@ use TinyContainer\NotFoundException;
 use TinyContainer\Tests\Fixtures\AnotherService;
 use TinyContainer\Tests\Fixtures\MyService;
 use TinyContainer\TinyContainer;
+use function TinyContainer\resolve;
 
 class TinyContainerTest extends TestCase
 {
@@ -22,10 +23,10 @@ class TinyContainerTest extends TestCase
     protected function setUp(): void
     {
         $this->container = new TinyContainer([
-            MyService::class => fn (ContainerInterface $container) => new MyService(
+            MyService::class => fn(ContainerInterface $container) => new MyService(
                 new DateTimeImmutable('2020-01-01 15:15:15')
             ),
-            AnotherService::class => fn (ContainerInterface $container) => new AnotherService(
+            AnotherService::class => fn(ContainerInterface $container) => new AnotherService(
                 $container->get(MyService::class)
             ),
             'failing.service' => function (ContainerInterface $container): void {
