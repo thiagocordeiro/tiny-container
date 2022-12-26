@@ -79,7 +79,7 @@ class TinyContainer implements ContainerInterface
 
             $params = array_map(
                 fn(ReflectionParameter $parameter) => $container->get($parameter->getType()->getName()),
-                $constructor->getParameters()
+                $constructor?->getParameters() ?? [],
             );
 
             return new $class(...$params);
